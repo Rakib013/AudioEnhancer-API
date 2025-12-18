@@ -1,0 +1,42 @@
+{% extends 'audio_api/base.html' %}
+
+{% block content %}
+<h1>DeepFilterNet2 - Audio Noise Reducer</h1>
+<p>Upload an audio file to denoise it using DeepFilterNet2</p>
+
+{% if error %}
+<div class="error">Error: {{ error }}</div>
+{% endif %}
+
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="audio_file">Upload Audio File:</label>
+            <input type="file" name="audio_file" id="audio_file" accept="audio/*" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="noise_type">Add Background Noise:</label>
+            <select name="noise_type" id="noise_type">
+                {% for noise in noises %}
+                <option value="{{ noise }}">{{ noise }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="snr">Noise Level (SNR):</label>
+            <select name="snr" id="snr">
+                <option value="-5">-5</option>
+                <option value="0">0</option>
+                <option value="10" selected>10</option>
+                <option value="20">20</option>
+            </select>
+        </div>
+        
+        <button type="submit">Process Audio</button>
+    </form>
+</div>
+{% endblock %}

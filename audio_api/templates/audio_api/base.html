@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Audio Processor - {% block title %}Home{% endblock %}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; background: #f0f2f5; }
+        .navbar { background: #1976d2; color: white; padding: 1rem 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .navbar h1 { font-size: 1.5rem; }
+        .navbar a { color: white; text-decoration: none; margin-left: 2rem; }
+        .navbar a:hover { text-decoration: underline; }
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 20px; }
+        .card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333; }
+        input[type="file"], select { width: 100%; padding: 0.75rem; border: 2px solid #ddd; border-radius: 4px; font-size: 1rem; }
+        input[type="file"]:focus, select:focus { outline: none; border-color: #1976d2; }
+        button { background: #1976d2; color: white; padding: 0.75rem 2rem; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; font-weight: 600; }
+        button:hover { background: #1565c0; }
+        .result { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
+        .audio-section { background: #f9f9f9; padding: 1.5rem; border-radius: 8px; }
+        .audio-section h2 { margin-bottom: 1rem; color: #1976d2; font-size: 1.25rem; }
+        .audio-section h3 { margin: 1.5rem 0 0.5rem; color: #555; font-size: 1rem; }
+        img { max-width: 100%; height: auto; border-radius: 4px; }
+        .error { color: #d32f2f; background: #ffebee; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; }
+        audio { width: 100%; margin-top: 0.5rem; }
+        .back-link { display: inline-block; margin-top: 1.5rem; color: #1976d2; text-decoration: none; font-weight: 600; }
+        .back-link:hover { text-decoration: underline; }
+        .recorder { margin-bottom: 1rem; }
+        #recordButton { background: #d32f2f; margin-right: 0.5rem; }
+        #recordButton:hover { background: #c62828; }
+        #recordButton.recording { background: #f44336; animation: pulse 1s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+        #stopButton { background: #666; }
+        #stopButton:hover { background: #555; }
+        #stopButton:disabled { background: #ccc; cursor: not-allowed; }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="navbar">
+        <h1>🎵 Audio Processor</h1>
+        <nav style="margin-top: 0.5rem;">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'noise_reducer' %}">Noise Reducer</a>
+            <a href="{% url 'volume_booster' %}">Volume Booster</a>
+        </nav>
+    </div>
+    
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

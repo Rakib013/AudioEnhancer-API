@@ -1,0 +1,116 @@
+{% extends 'audio_api/base.html' %}
+
+{% block title %}Noise Reducer{% endblock %}
+
+{% block content %}
+<h1 style="margin-bottom: 1rem; color: #1976d2;">🎙️ Noise Reducer</h1>
+<p style="color: #666; margin-bottom: 2rem;">Remove background noise from your audio using DeepFilterNet2.</p>
+
+{% if error %}
+<div class="error">Error: {{ error }}</div>
+{% endif %}
+
+<div class="card">
+    <form method="post" enctype="multipart/form-data" id="audioForm">
+        {% csrf_token %}
+        
+        <div class="recorder">
+            <h3 style="margin-bottom: 0.5rem;">Record Audio (Optional)</h3>
+            <button type="button" id="recordButton">🎤 Start Recording</button>
+            <button type="button" id="stopButton" disabled>⏹️ Stop Recording</button>
+            <span id="recordingStatus" style="margin-left: 1rem; color: #666;"></span>
+            <audio id="recordedAudio" controls style="display: none; margin-top: 1rem;"></audio>
+        </div>
+        
+        <div class="form-group">
+            <label for="audio_file">Or Upload Audio File:</label>
+            <input type="file" name="audio_file" id="audio_file" accept="audio/*">
+        </div>
+        
+        <div class="form-group">
+            <label for="noise_type">Add Background Noise:</label>
+            <select name="noise_type" id="noise_type">
+                {% for noise in noises %}
+                <option value="{{ noise }}">{{ noise }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="snr">Noise Level (SNR):</label>
+            <select name="snr" id="snr">
+                <option value="-5">-5 dB</option>
+                <option value="0">0 dB</option>
+                <option value="10" selected>10 dB</option>
+                <option value="20">20 dB</option>
+            </select>
+        </div>
+        
+        <button type="submit">Process Audio</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let mediaRecorder;
+let audioChunks = [];
+let recordedBlob;
+
+const recordButton = document.getElementById('recordButton');
+const stopButton = document.getElementById('stopButton');
+const recordingStatus = document.getElementById('recordingStatus');
+const recordedAudio = document.getElementById('recordedAudio');
+const audioFileInput = document.getElementById('audio_file');
+
+recordButton.addEventListener('click', async () => {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        
+        // Use audio/webm or audio/ogg which are more widely supported
+        const mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 'audio/ogg';
+        mediaRecorder = new MediaRecorder(stream, { mimeType: mimeType });
+        audioChunks = [];
+        
+        mediaRecorder.ondataavailable = (event) => {
+            audioChunks.push(event.data);
+        };
+        
+        mediaRecorder.onstop = () => {
+            const mimeType = mediaRecorder.mimeType;
+            recordedBlob = new Blob(audioChunks, { type: mimeType });
+            const audioUrl = URL.createObjectURL(recordedBlob);
+            recordedAudio.src = audioUrl;
+            recordedAudio.style.display = 'block';
+            
+            // Create a file from blob with correct extension
+            const extension = mimeType.includes('webm') ? 'webm' : 'ogg';
+            const file = new File([recordedBlob], `recorded_audio.${extension}`, { type: mimeType });
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            audioFileInput.files = dataTransfer.files;
+        };
+        
+        mediaRecorder.start();
+        recordButton.classList.add('recording');
+        recordButton.disabled = true;
+        stopButton.disabled = false;
+        recordingStatus.textContent = '🔴 Recording...';
+        
+    } catch (err) {
+        alert('Could not access microphone: ' + err.message);
+    }
+});
+
+stopButton.addEventListener('click', () => {
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+        mediaRecorder.stream.getTracks().forEach(track => track.stop());
+        recordButton.classList.remove('recording');
+        recordButton.disabled = false;
+        stopButton.disabled = true;
+        recordingStatus.textContent = '✅ Recording complete';
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'audio_api/base.html' %}
+
+{% block title %}Results{% endblock %}
+
+{% block content %}
+<h1 style="margin-bottom: 2rem;">Processing Results</h1>
+
+<div class="result">
+    <div class="audio-section">
+        <h2>Original/Noisy Audio</h2>
+        <audio controls src="{% if audio.noisy_audio %}{{ audio.noisy_audio.url }}{% else %}{{ audio.original_audio.url }}{% endif %}"></audio>
+        <h3>Spectrogram</h3>
+        <img src="{{ audio.noisy_spectrogram.url }}" alt="Original Spectrogram">
+    </div>
+    
+    <div class="audio-section">
+        <h2>{% if audio.processing_type == 'noise_reduction' %}Enhanced{% else %}Boosted{% endif %} Audio</h2>
+        <audio controls src="{{ audio.processed_audio.url }}"></audio>
+        <h3>Spectrogram</h3>
+        <img src="{{ audio.enhanced_spectrogram.url }}" alt="Processed Spectrogram">
+    </div>
+</div>
+
+<a href="{% if audio.processing_type == 'noise_reduction' %}{% url 'noise_reducer' %}{% else %}{% url 'volume_booster' %}{% endif %}" class="back-link">← Process Another File</a>
+{% endblock %}

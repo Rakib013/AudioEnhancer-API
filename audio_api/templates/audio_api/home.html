@@ -1,0 +1,30 @@
+{% extends 'audio_api/base.html' %}
+
+{% block content %}
+<div class="card">
+    <h1 style="margin-bottom: 1rem; color: #1976d2;">Welcome to Audio Processor</h1>
+    <p style="color: #666; margin-bottom: 2rem;">Process your audio files with AI-powered noise reduction and volume boosting.</p>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        <div style="background: #e3f2fd; padding: 2rem; border-radius: 8px;">
+            <h2 style="color: #1976d2; margin-bottom: 1rem;">🎙️ Noise Reducer</h2>
+            <p style="margin-bottom: 1rem; color: #555;">Remove background noise from your audio using DeepFilterNet2.</p>
+            <a href="{% url 'noise_reducer' %}" style="display: inline-block; background: #1976d2; color: white; padding: 0.75rem 1.5rem; border-radius: 4px; text-decoration: none; font-weight: 600;">Try Noise Reducer</a>
+        </div>
+        
+        <div style="background: #f3e5f5; padding: 2rem; border-radius: 8px;">
+            <h2 style="color: #7b1fa2; margin-bottom: 1rem;">🔊 Volume Booster</h2>
+            <p style="margin-bottom: 1rem; color: #555;">Enhance and boost audio volume using VoiceFixer AI.</p>
+            <a href="{% url 'volume_booster' %}" style="display: inline-block; background: #7b1fa2; color: white; padding: 0.75rem 1.5rem; border-radius: 4px; text-decoration: none; font-weight: 600;">Try Volume Booster</a>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2 style="margin-bottom: 1rem;">API Endpoints</h2>
+    <ul style="line-height: 2;">
+        <li><code style="background: #f5f5f5; padding: 0.25rem 0.5rem; border-radius: 3px;">POST /api/audio/denoise/</code> - Noise reduction</li>
+        <li><code style="background: #f5f5f5; padding: 0.25rem 0.5rem; border-radius: 3px;">POST /api/audio/boost/</code> - Volume boosting</li>
+    </ul>
+</div>
+{% endblock %}

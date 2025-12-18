@@ -1,0 +1,209 @@
+2025-12-18 12:58:30 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 12:58:30 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 12:58:30 | INFO     | DF | Git commit: 590081e, branch: main
+2025-12-18 12:58:30 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 12:58:30 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 12:58:30 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 12:58:30 | INFO     | DF | Running on device cpu
+2025-12-18 12:58:30 | INFO     | DF | Model loaded
+2025-12-18 12:58:31 | INFO     | DF | Filter: ['p232']
+2025-12-18 12:59:33 | INFO     | DF | Got parameters speech_upl: /private/var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/gradio/48314eada9eacde67bdb6c505cf296f2b06c0f8f298550400419ffafef0ee744/audio.wav, noise: None, snr: 10
+2025-12-18 12:59:35 | INFO     | DF | Got parameters speech_upl: /private/var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/gradio/48314eada9eacde67bdb6c505cf296f2b06c0f8f298550400419ffafef0ee744/audio.wav, noise: None, snr: 10
+2025-12-18 13:00:10 | INFO     | DF | Got parameters speech_upl: /private/var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/gradio/48314eada9eacde67bdb6c505cf296f2b06c0f8f298550400419ffafef0ee744/audio.wav, noise: None, snr: 10
+2025-12-18 13:01:44 | INFO     | DF | Got parameters speech_upl: /private/var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/gradio/20917c54ef354cc7d1dc24a796b31b9aadc3a83390ec25e808c7dfbfe515b88f/audio.wav, noise: None, snr: 10
+2025-12-18 13:03:04 | INFO     | DF | Got parameters speech_upl: /private/var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/gradio/20917c54ef354cc7d1dc24a796b31b9aadc3a83390ec25e808c7dfbfe515b88f/audio.wav, noise: Kitchen, snr: 10
+2025-12-18 13:03:16 | INFO     | DF | Got parameters speech_upl: /private/var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/gradio/20917c54ef354cc7d1dc24a796b31b9aadc3a83390ec25e808c7dfbfe515b88f/audio.wav, noise: None, snr: 0
+2025-12-18 13:05:29 | INFO     | DF | Got parameters speech_upl: /private/var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/gradio/8c2f6a03a5f2eb83c447d553db1e856edb5ab3e6a2731a3bf59eafd2904b9e95/audio.wav, noise: None, snr: 10
+2025-12-18 13:05:40 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 13:05:40 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 13:05:40 | INFO     | DF | Git commit: 590081e, branch: main
+2025-12-18 13:05:40 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 13:05:40 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 13:05:40 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 13:05:40 | INFO     | DF | Running on device cpu
+2025-12-18 13:05:40 | INFO     | DF | Model loaded
+2025-12-18 13:05:40 | INFO     | DF | Filter: ['p232']
+2025-12-18 13:05:51 | INFO     | DF | Got parameters speech_upl: /private/var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/gradio/8615f34d74a2284e8bf6647ff15cc5c2142fdf6b58183695893dc8bf4651ad5e/audio.wav, noise: None, snr: 10
+2025-12-18 13:05:51 | INFO     | DF | Loaded sample with shape torch.Size([1, 89280])
+2025-12-18 13:05:51 | INFO     | DF | Start denoising audio
+2025-12-18 13:05:51 | INFO     | DF | Denoising finished
+2025-12-18 13:05:51 | INFO     | DF | saved audios: /var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/tmpwzdq1t3_noisy.wav, /var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/tmpid2cqcefenhanced.wav
+2025-12-18 13:05:51 | INFO     | DF | Filter: ['/private/var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/gradio/8615f34d74a2284e8bf6647ff15cc5c2142fdf6b58183695893dc8bf4651ad5e/audio.wav', '/var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/tmpwzdq1t3_noisy.wav', '/var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/tmpid2cqcefenhanced.wav', '/private/var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/gradio/8615f34d74a2284e8bf6647ff15cc5c2142fdf6b58183695893dc8bf4651ad5e/audio.wav', 'p232']
+2025-12-18 13:06:51 | INFO     | DF | Got parameters speech_upl: /private/var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/gradio/8a29f7909ed8e573b2b22e9044032c434f891dab28fbad1b1f3540f1ab4c1813/audio.wav, noise: None, snr: 10
+2025-12-18 13:06:51 | INFO     | DF | Loaded sample with shape torch.Size([1, 480000])
+2025-12-18 13:06:51 | INFO     | DF | Start denoising audio
+2025-12-18 13:06:51 | INFO     | DF | Denoising finished
+2025-12-18 13:06:51 | INFO     | DF | saved audios: /var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/tmp908kgg7inoisy.wav, /var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/tmp45f39il6enhanced.wav
+2025-12-18 13:06:52 | INFO     | DF | Filter: ['/private/var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/gradio/8a29f7909ed8e573b2b22e9044032c434f891dab28fbad1b1f3540f1ab4c1813/audio.wav', '/var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/tmp908kgg7inoisy.wav', '/var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/tmp45f39il6enhanced.wav', '/private/var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/gradio/8a29f7909ed8e573b2b22e9044032c434f891dab28fbad1b1f3540f1ab4c1813/audio.wav', 'p232']
+2025-12-18 13:08:38 | INFO     | DF | Got parameters speech_upl: /private/var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/gradio/8a29f7909ed8e573b2b22e9044032c434f891dab28fbad1b1f3540f1ab4c1813/audio.wav, noise: None, snr: 20
+2025-12-18 13:08:38 | INFO     | DF | Loaded sample with shape torch.Size([1, 480000])
+2025-12-18 13:08:38 | INFO     | DF | Start denoising audio
+2025-12-18 13:08:38 | INFO     | DF | Denoising finished
+2025-12-18 13:08:38 | INFO     | DF | saved audios: /var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/tmprm1gyqltnoisy.wav, /var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/tmpqukcw2m8enhanced.wav
+2025-12-18 13:08:38 | INFO     | DF | Filter: ['/private/var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/gradio/8a29f7909ed8e573b2b22e9044032c434f891dab28fbad1b1f3540f1ab4c1813/audio.wav', '/var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/tmprm1gyqltnoisy.wav', '/var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/tmpqukcw2m8enhanced.wav', '/private/var/folders/80/yfn_3rfx50g_h50gwsyjj16c0000gn/T/gradio/8a29f7909ed8e573b2b22e9044032c434f891dab28fbad1b1f3540f1ab4c1813/audio.wav', 'p232']
+2025-12-18 08:40:59 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 08:40:59 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 08:40:59 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 08:40:59 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 08:40:59 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 08:40:59 | INFO     | DF | Running on device cpu
+2025-12-18 08:40:59 | INFO     | DF | Model loaded
+2025-12-18 08:41:15 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 08:41:15 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 08:41:15 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 08:41:15 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 08:41:15 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 08:41:15 | INFO     | DF | Running on device cpu
+2025-12-18 08:41:15 | INFO     | DF | Model loaded
+2025-12-18 08:45:59 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 08:45:59 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 08:45:59 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 08:45:59 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 08:45:59 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 08:45:59 | INFO     | DF | Running on device cpu
+2025-12-18 08:45:59 | INFO     | DF | Model loaded
+2025-12-18 08:46:00 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 08:46:00 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 08:46:00 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 08:46:00 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 08:46:00 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 08:46:00 | INFO     | DF | Running on device cpu
+2025-12-18 08:46:00 | INFO     | DF | Model loaded
+2025-12-18 08:46:06 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 08:46:06 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 08:46:06 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 08:46:06 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 08:46:06 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 08:46:06 | INFO     | DF | Running on device cpu
+2025-12-18 08:46:06 | INFO     | DF | Model loaded
+2025-12-18 08:46:32 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 08:46:32 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 08:46:32 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 08:46:32 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 08:46:32 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 08:46:32 | INFO     | DF | Running on device cpu
+2025-12-18 08:46:32 | INFO     | DF | Model loaded
+2025-12-18 08:46:51 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 08:46:51 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 08:46:51 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 08:46:51 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 08:46:51 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 08:46:51 | INFO     | DF | Running on device cpu
+2025-12-18 08:46:51 | INFO     | DF | Model loaded
+2025-12-18 08:48:08 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 08:48:08 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 08:48:08 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 08:48:08 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 08:48:08 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 08:48:08 | INFO     | DF | Running on device cpu
+2025-12-18 08:48:08 | INFO     | DF | Model loaded
+2025-12-18 08:48:15 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 08:48:15 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 08:48:15 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 08:48:15 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 08:48:15 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 08:48:17 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 08:48:17 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 08:48:17 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 08:48:17 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 08:48:17 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 08:48:17 | INFO     | DF | Running on device cpu
+2025-12-18 08:48:17 | INFO     | DF | Model loaded
+2025-12-18 09:18:07 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 09:18:07 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 09:18:07 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 09:18:07 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 09:18:07 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 09:18:07 | INFO     | DF | Running on device cpu
+2025-12-18 09:18:07 | INFO     | DF | Model loaded
+2025-12-18 09:19:54 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 09:19:54 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 09:19:54 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 09:19:54 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 09:19:54 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 09:19:54 | INFO     | DF | Running on device cpu
+2025-12-18 09:19:54 | INFO     | DF | Model loaded
+2025-12-18 09:22:00 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 09:22:00 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 09:22:00 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 09:22:00 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 09:22:00 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 09:22:00 | INFO     | DF | Running on device cpu
+2025-12-18 09:22:00 | INFO     | DF | Model loaded
+2025-12-18 09:22:01 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 09:22:01 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 09:22:01 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 09:22:01 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 09:22:01 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 09:22:01 | INFO     | DF | Running on device cpu
+2025-12-18 09:22:01 | INFO     | DF | Model loaded
+2025-12-18 09:22:02 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 09:22:02 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 09:22:02 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 09:22:02 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 09:22:02 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 09:22:02 | INFO     | DF | Running on device cpu
+2025-12-18 09:22:02 | INFO     | DF | Model loaded
+2025-12-18 09:22:39 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 09:22:39 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 09:22:39 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 09:22:39 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 09:22:39 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 09:22:39 | INFO     | DF | Running on device cpu
+2025-12-18 09:22:39 | INFO     | DF | Model loaded
+2025-12-18 09:24:29 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 09:24:29 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 09:24:29 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 09:24:29 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 09:24:29 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 09:24:29 | INFO     | DF | Running on device cpu
+2025-12-18 09:24:29 | INFO     | DF | Model loaded
+2025-12-18 09:24:32 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 09:24:32 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 09:24:32 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 09:24:32 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 09:24:32 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 09:24:32 | INFO     | DF | Running on device cpu
+2025-12-18 09:24:32 | INFO     | DF | Model loaded
+2025-12-18 09:29:17 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 09:29:17 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 09:29:17 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 09:29:17 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 09:29:17 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 09:29:17 | INFO     | DF | Running on device cpu
+2025-12-18 09:29:17 | INFO     | DF | Model loaded
+2025-12-18 09:33:42 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 09:33:42 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 09:33:42 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 09:33:42 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 09:33:42 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 09:33:42 | INFO     | DF | Running on device cpu
+2025-12-18 09:33:42 | INFO     | DF | Model loaded
+2025-12-18 09:36:17 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 09:36:17 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 09:36:17 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 09:36:17 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 09:36:17 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 09:36:17 | INFO     | DF | Running on device cpu
+2025-12-18 09:36:17 | INFO     | DF | Model loaded
+2025-12-18 09:36:49 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 09:36:49 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 09:36:49 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 09:36:49 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 09:36:49 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 09:36:49 | INFO     | DF | Running on device cpu
+2025-12-18 09:36:49 | INFO     | DF | Model loaded
+2025-12-18 09:37:04 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 09:37:04 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 09:37:04 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 09:37:04 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 09:37:04 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 09:37:04 | INFO     | DF | Running on device cpu
+2025-12-18 09:37:04 | INFO     | DF | Model loaded
+2025-12-18 09:37:16 | INFO     | DF | Running on torch 2.9.1
+2025-12-18 09:37:16 | INFO     | DF | Running on host Rakibuls-MacBook-Air.local
+2025-12-18 09:37:16 | INFO     | DF | Loading model settings of DeepFilterNet2
+2025-12-18 09:37:16 | INFO     | DF | Initializing model `deepfilternet2`
+2025-12-18 09:37:16 | INFO     | DF | Found checkpoint ./DeepFilterNet2/checkpoints/model_96.ckpt.best with epoch 96
+2025-12-18 09:37:16 | INFO     | DF | Running on device cpu
+2025-12-18 09:37:16 | INFO     | DF | Model loaded

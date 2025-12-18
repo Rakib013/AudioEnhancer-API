@@ -1,0 +1,161 @@
+import matplotlib
+matplotlib.use('Agg')
+
+import math
+import os
+import tempfile
+import subprocess
+from typing import Optional, Tuple
+import numpy as np
+import torch
+from torch import Tensor
+import matplotlib.pyplot as plt
+from PIL import Image
+from df import config
+from df.enhance import enhance, init_df, load_audio, save_audio
+from df.io import resample
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model, df, _ = init_df(model_base_dir=None, config_allow_defaults=True)
+model = model.to(device=device).eval()
+
+NOISES = {
+    "None": None,
+    "Kitchen": "samples/dkitchen.wav",
+    "Living Room": "samples/dliving.wav",
+    "River": "samples/nriver.wav",
+    "Cafe": "samples/scafe.wav",
+}
+
+def convert_to_wav(input_path: str) -> str:
+    """Convert audio file to WAV format if needed"""
+    if input_path.lower().endswith('.wav'):
+        return input_path
+    
+    output_path = tempfile.NamedTemporaryFile(suffix='.wav', delete=False).name
+    
+    try:
+        # Try ffmpeg first
+        result = subprocess.run([
+            'ffmpeg', '-y', '-i', input_path,
+            '-acodec', 'pcm_s16le',
+            '-ar', '48000',
+            '-ac', '1',
+            output_path
+        ], capture_output=True, stderr=subprocess.DEVNULL)
+        
+        if result.returncode == 0 and os.path.exists(output_path):
+            return output_path
+    except Exception as e:
+        print(f"FFmpeg failed: {e}")
+    
+    # Fallback to pydub
+    try:
+        from pydub import AudioSegment
+        audio = AudioSegment.from_file(input_path)
+        audio.export(output_path, format='wav')
+        return output_path
+    except Exception as e:
+        print(f"Pydub failed: {e}")
+        raise Exception(f"Could not convert audio file: {e}")
+
+def mix_at_snr(clean, noise, snr, eps=1e-10):
+    clean = torch.as_tensor(clean).mean(0, keepdim=True)
+    noise = torch.as_tensor(noise).mean(0, keepdim=True)
+    if noise.shape[1] < clean.shape[1]:
+        noise = noise.repeat((1, int(math.ceil(clean.shape[1] / noise.shape[1]))))
+    max_start = int(noise.shape[1] - clean.shape[1])
+    start = torch.randint(0, max_start, ()).item() if max_start > 0 else 0
+    noise = noise[:, start : start + clean.shape[1]]
+    E_speech = torch.mean(clean.pow(2)) + eps
+    E_noise = torch.mean(noise.pow(2))
+    K = torch.sqrt((E_noise / E_speech) * 10 ** (snr / 10) + eps)
+    noise = noise / K
+    mixture = clean + noise
+    assert torch.isfinite(mixture).all()
+    max_m = mixture.abs().max()
+    if max_m > 1:
+        clean, noise, mixture = clean / max_m, noise / max_m, mixture / max_m
+    return clean, noise, mixture
+
+def spec_im(audio: torch.Tensor, sr=48000, n_fft=1024, hop=512, **kwargs) -> Image:
+    audio = torch.as_tensor(audio)
+    w = torch.hann_window(n_fft, device=audio.device)
+    
+    # Use return_complex=True (new PyTorch API)
+    spec = torch.stft(audio, n_fft, hop, window=w, return_complex=True)
+    spec = spec.div_(w.pow(2).sum())
+    spec = spec.abs().clamp_min(1e-12).log10().mul(10)
+    
+    figure = plt.figure(figsize=(15, 4))
+    figure.set_tight_layout(True)
+    
+    if spec.dim() > 2:
+        spec = spec.squeeze(0)
+    
+    spec_np = spec.cpu().numpy()
+    t = np.arange(0, spec_np.shape[-1]) * hop / sr
+    f = np.arange(0, spec_np.shape[0]) * sr // 2 / (n_fft // 2) / 1000
+    
+    ax = figure.add_subplot(111)
+    ax.pcolormesh(t, f, spec_np, shading="auto", vmin=-100, vmax=max(0.0, spec.max().item()), cmap="inferno")
+    ax.set_xlabel("Time [s]")
+    ax.set_ylabel("Frequency [kHz]")
+    
+    figure.canvas.draw()
+    buf = figure.canvas.buffer_rgba()
+    w, h = figure.canvas.get_width_height()
+    img = Image.frombuffer("RGBA", (w, h), buf, "raw", "RGBA", 0, 1)
+    plt.close(figure)
+    return img.convert("RGB")
+
+def process_audio(audio_path: str, noise_type: str = "None", snr: int = 10, max_duration: int = 60 * 60 * 60):
+    # Convert to WAV if needed
+    print(f"Processing audio: {audio_path}")
+    wav_path = convert_to_wav(audio_path)
+    should_cleanup = wav_path != audio_path
+    print(f"Converted to: {wav_path}")
+    
+    try:
+        sr = config("sr", 48000, int, section="df")
+        sample, meta = load_audio(wav_path, sr)
+        
+        max_len = max_duration * sr
+        if sample.shape[-1] > max_len:
+            start = torch.randint(0, sample.shape[-1] - max_len, ()).item()
+            sample = sample[..., start : start + max_len]
+        
+        if sample.dim() > 1 and sample.shape[0] > 1:
+            sample = sample.mean(dim=0, keepdim=True)
+        
+        noise_fn = NOISES.get(noise_type)
+        if noise_fn is not None and os.path.exists(noise_fn):
+            noise, _ = load_audio(noise_fn, sr)
+            _, _, sample = mix_at_snr(sample, noise, snr)
+        
+        enhanced = enhance(model, df, sample)
+        
+        lim = torch.linspace(0.0, 1.0, int(sr * 0.15)).unsqueeze(0)
+        lim = torch.cat((lim, torch.ones(1, enhanced.shape[1] - lim.shape[1])), dim=1)
+        enhanced = enhanced * lim
+        
+        if meta.sample_rate != sr:
+            enhanced = resample(enhanced, sr, meta.sample_rate)
+            sample = resample(sample, sr, meta.sample_rate)
+            sr = meta.sample_rate
+        
+        noisy_wav = tempfile.NamedTemporaryFile(suffix="_noisy.wav", delete=False).name
+        save_audio(noisy_wav, sample, sr)
+        
+        enhanced_wav = tempfile.NamedTemporaryFile(suffix="_enhanced.wav", delete=False).name
+        save_audio(enhanced_wav, enhanced, sr)
+        
+        noisy_img = spec_im(sample, sr=sr)
+        enh_img = spec_im(enhanced, sr=sr)
+        
+        return noisy_wav, enhanced_wav, noisy_img, enh_img
+        
+    finally:
+        # Cleanup converted file
+        if should_cleanup and os.path.exists(wav_path):
+            os.remove(wav_path)
