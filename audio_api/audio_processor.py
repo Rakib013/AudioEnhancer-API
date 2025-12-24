@@ -78,43 +78,12 @@ def mix_at_snr(clean, noise, snr, eps=1e-10):
         clean, noise, mixture = clean / max_m, noise / max_m, mixture / max_m
     return clean, noise, mixture
 
-def spec_im(audio: torch.Tensor, sr=48000, n_fft=1024, hop=512, **kwargs) -> Image:
-    audio = torch.as_tensor(audio)
-    w = torch.hann_window(n_fft, device=audio.device)
-    
-    # Use return_complex=True (new PyTorch API)
-    spec = torch.stft(audio, n_fft, hop, window=w, return_complex=True)
-    spec = spec.div_(w.pow(2).sum())
-    spec = spec.abs().clamp_min(1e-12).log10().mul(10)
-    
-    figure = plt.figure(figsize=(15, 4))
-    figure.set_tight_layout(True)
-    
-    if spec.dim() > 2:
-        spec = spec.squeeze(0)
-    
-    spec_np = spec.cpu().numpy()
-    t = np.arange(0, spec_np.shape[-1]) * hop / sr
-    f = np.arange(0, spec_np.shape[0]) * sr // 2 / (n_fft // 2) / 1000
-    
-    ax = figure.add_subplot(111)
-    ax.pcolormesh(t, f, spec_np, shading="auto", vmin=-100, vmax=max(0.0, spec.max().item()), cmap="inferno")
-    ax.set_xlabel("Time [s]")
-    ax.set_ylabel("Frequency [kHz]")
-    
-    figure.canvas.draw()
-    buf = figure.canvas.buffer_rgba()
-    w, h = figure.canvas.get_width_height()
-    img = Image.frombuffer("RGBA", (w, h), buf, "raw", "RGBA", 0, 1)
-    plt.close(figure)
-    return img.convert("RGB")
-
 def process_audio(audio_path: str, noise_type: str = "None", snr: int = 10, max_duration: int = 60 * 60 * 60):
     # Convert to WAV if needed
-    print(f"Processing audio: {audio_path}")
+    # print(f"Processing audio: {audio_path}")
     wav_path = convert_to_wav(audio_path)
     should_cleanup = wav_path != audio_path
-    print(f"Converted to: {wav_path}")
+    # print(f"Converted to: {wav_path}")
     
     try:
         sr = config("sr", 48000, int, section="df")
@@ -150,10 +119,8 @@ def process_audio(audio_path: str, noise_type: str = "None", snr: int = 10, max_
         enhanced_wav = tempfile.NamedTemporaryFile(suffix="_enhanced.wav", delete=False).name
         save_audio(enhanced_wav, enhanced, sr)
         
-        noisy_img = spec_im(sample, sr=sr)
-        enh_img = spec_im(enhanced, sr=sr)
         
-        return noisy_wav, enhanced_wav, noisy_img, enh_img
+        return noisy_wav, enhanced_wav
         
     finally:
         # Cleanup converted file
