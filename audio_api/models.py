@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 import uuid
 
 class AudioProcessing(models.Model):
@@ -8,15 +9,9 @@ class AudioProcessing(models.Model):
     ]
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)  # Nullable for guest users
     original_audio = models.FileField(upload_to='audio/original/')
     processed_audio = models.FileField(upload_to='audio/processed/', null=True, blank=True)
-    
-    # For noise reduction
-    noisy_audio = models.FileField(upload_to='audio/noisy/', null=True, blank=True)
-    noisy_spectrogram = models.ImageField(upload_to='spectrograms/noisy/', null=True, blank=True)
-    enhanced_spectrogram = models.ImageField(upload_to='spectrograms/enhanced/', null=True, blank=True)
-    noise_type = models.CharField(max_length=50, default='None', blank=True)
-    snr = models.IntegerField(default=10, null=True, blank=True)
     
     # Processing metadata
     processing_type = models.CharField(max_length=20, choices=PROCESSING_TYPES)

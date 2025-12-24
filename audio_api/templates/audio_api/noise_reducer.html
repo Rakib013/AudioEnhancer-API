@@ -1,75 +1,224 @@
 {% extends 'audio_api/base.html' %}
 
-{% block title %}Noise Reducer{% endblock %}
+{% block title %}Noise Reduction{% endblock %}
 
 {% block content %}
-<h1 style="margin-bottom: 1rem; color: #1976d2;">🎙️ Noise Reducer</h1>
-<p style="color: #666; margin-bottom: 2rem;">Remove background noise from your audio using DeepFilterNet2.</p>
+<div class="max-w-6xl mx-auto">
+    <!-- Header -->
+    <div class="mb-10 text-center">
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl mb-4 shadow-lg">
+            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
+            </svg>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
+            Noise Reduction
+        </h1>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">Remove unwanted background noise using state-of-the-art DeepFilterNet AI</p>
+    </div>
 
-{% if error %}
-<div class="error">Error: {{ error }}</div>
-{% endif %}
+    <!-- Error Message -->
+    {% if error %}
+    <div class="mb-8 max-w-3xl mx-auto">
+        <div class="bg-red-50 border-l-4 border-red-500 rounded-xl p-5 flex items-start shadow-md">
+            <svg class="w-6 h-6 text-red-500 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+            </svg>
+            <div>
+                <p class="font-semibold text-red-800">Error</p>
+                <p class="text-red-700">{{ error }}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 
-<div class="card">
-    <form method="post" enctype="multipart/form-data" id="audioForm">
-        {% csrf_token %}
-        
-        <div class="recorder">
-            <h3 style="margin-bottom: 0.5rem;">Record Audio (Optional)</h3>
-            <button type="button" id="recordButton">🎤 Start Recording</button>
-            <button type="button" id="stopButton" disabled>⏹️ Stop Recording</button>
-            <span id="recordingStatus" style="margin-left: 1rem; color: #666;"></span>
-            <audio id="recordedAudio" controls style="display: none; margin-top: 1rem;"></audio>
+    <!-- Modern Toggle Switch -->
+    <div class="mb-8 flex justify-center">
+        <div class="inline-flex bg-gray-100 rounded-2xl p-1.5 shadow-inner">
+            <button id="uploadTab" onclick="switchTab('upload')" 
+                    class="tab-button active px-8 py-3 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center space-x-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                </svg>
+                <span>Upload File</span>
+            </button>
+            <button id="recordTab" onclick="switchTab('record')" 
+                    class="tab-button px-8 py-3 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center space-x-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                    <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                </svg>
+                <span>Record Live</span>
+            </button>
         </div>
-        
-        <div class="form-group">
-            <label for="audio_file">Or Upload Audio File:</label>
-            <input type="file" name="audio_file" id="audio_file" accept="audio/*">
+    </div>
+
+    <!-- Upload Section -->
+    <div id="uploadSection" class="tab-content max-w-2xl mx-auto">
+        <div class="bg-white rounded-3xl shadow-2xl p-10 border border-gray-100">
+            <form method="post" enctype="multipart/form-data" id="audioForm">
+                {% csrf_token %}
+                
+                <!-- Upload Area -->
+                <div class="relative border-2 border-dashed border-gray-300 rounded-2xl p-12 text-center hover:border-purple-400 hover:bg-purple-50/50 transition-all cursor-pointer group/upload mb-8">
+                    <input type="file" name="audio_file" id="audio_file" accept="audio/*" class="hidden" onchange="handleFileSelect(event)">
+                    <label for="audio_file" class="cursor-pointer block">
+                        <div class="w-20 h-20 mx-auto mb-5 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center group-hover/upload:scale-110 transition-transform">
+                            <svg class="w-10 h-10 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+                            </svg>
+                        </div>
+                        <p class="text-gray-700 font-semibold text-lg mb-2">Drop your audio file here</p>
+                        <p class="text-gray-500">or click to browse • All formats supported</p>
+                    </label>
+                </div>
+                
+                <div id="selectedFile" class="mb-8 hidden">
+                    <div class="bg-purple-50 border border-purple-200 rounded-xl p-5 flex items-center">
+                        <svg class="w-6 h-6 text-purple-600 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        <div class="flex-1">
+                            <p class="text-purple-800 font-semibold" id="fileName"></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="w-full inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold rounded-xl transition transform hover:scale-105 shadow-lg hover:shadow-purple-500/50 text-lg">
+                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                    Process Audio Now
+                </button>
+            </form>
         </div>
-        
-        <div class="form-group">
-            <label for="noise_type">Add Background Noise:</label>
-            <select name="noise_type" id="noise_type">
-                {% for noise in noises %}
-                <option value="{{ noise }}">{{ noise }}</option>
-                {% endfor %}
-            </select>
+    </div>
+
+    <!-- Recording Section -->
+    <div id="recordSection" class="tab-content hidden max-w-2xl mx-auto">
+        <div class="bg-white rounded-3xl shadow-2xl p-10 border border-gray-100">
+            <div class="space-y-6">
+                <p class="text-gray-600 text-center text-lg">Capture audio directly from your microphone</p>
+                
+                <div class="flex gap-4">
+                    <button id="startBtn" onclick="startRecording()" 
+                            class="flex-1 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white font-bold py-4 px-8 rounded-xl transition transform hover:scale-105 shadow-lg flex items-center justify-center text-lg">
+                        <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <circle cx="10" cy="10" r="6"/>
+                        </svg>
+                        Start Recording
+                    </button>
+                    <button id="stopBtn" onclick="stopRecording()" disabled 
+                            class="flex-1 bg-gray-300 text-gray-500 font-bold py-4 px-8 rounded-xl cursor-not-allowed flex items-center justify-center text-lg">
+                        <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <rect x="6" y="6" width="8" height="8" rx="1"/>
+                        </svg>
+                        Stop
+                    </button>
+                </div>
+                
+                <div id="recordingIndicator" class="hidden">
+                    <div class="bg-red-50 border border-red-200 rounded-xl p-5 flex items-center justify-center">
+                        <div class="w-3 h-3 bg-red-600 rounded-full mr-3 animate-pulse"></div>
+                        <span class="text-red-700 font-semibold text-lg">Recording in progress...</span>
+                    </div>
+                </div>
+                
+                <div id="audioPlayback"></div>
+            </div>
         </div>
-        
-        <div class="form-group">
-            <label for="snr">Noise Level (SNR):</label>
-            <select name="snr" id="snr">
-                <option value="-5">-5 dB</option>
-                <option value="0">0 dB</option>
-                <option value="10" selected>10 dB</option>
-                <option value="20">20 dB</option>
-            </select>
+    </div>
+
+    <!-- Info Section -->
+    <div class="mt-12 bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl p-10 border border-gray-200">
+        <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center flex items-center justify-center">
+            <svg class="w-7 h-7 text-purple-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+            </svg>
+            How It Works
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition">
+                <div class="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl flex items-center justify-center mb-4">
+                    <span class="text-2xl font-bold text-purple-600">1</span>
+                </div>
+                <p class="font-bold text-gray-900 mb-2 text-lg">Upload or Record</p>
+                <p class="text-gray-600">Choose an audio file from your device or record directly through your browser.</p>
+            </div>
+            <div class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition">
+                <div class="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl flex items-center justify-center mb-4">
+                    <span class="text-2xl font-bold text-purple-600">2</span>
+                </div>
+                <p class="font-bold text-gray-900 mb-2 text-lg">AI Processing</p>
+                <p class="text-gray-600">DeepFilterNet AI analyzes and removes background noise while preserving voice clarity.</p>
+            </div>
+            <div class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition">
+                <div class="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl flex items-center justify-center mb-4">
+                    <span class="text-2xl font-bold text-purple-600">3</span>
+                </div>
+                <p class="font-bold text-gray-900 mb-2 text-lg">Download Result</p>
+                <p class="text-gray-600">Get your crystal-clear audio file ready for podcasts, videos, or any use.</p>
+            </div>
         </div>
-        
-        <button type="submit">Process Audio</button>
-    </form>
+    </div>
 </div>
-{% endblock %}
 
-{% block extra_js %}
+<style>
+.tab-button {
+    color: #6b7280;
+    background: transparent;
+}
+
+.tab-button.active {
+    color: white;
+    background: linear-gradient(to bottom right, #9333ea, #ec4899);
+    box-shadow: 0 4px 6px -1px rgba(147, 51, 234, 0.3);
+}
+
+.tab-content {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+
 <script>
 let mediaRecorder;
 let audioChunks = [];
-let recordedBlob;
+let stream;
 
-const recordButton = document.getElementById('recordButton');
-const stopButton = document.getElementById('stopButton');
-const recordingStatus = document.getElementById('recordingStatus');
-const recordedAudio = document.getElementById('recordedAudio');
-const audioFileInput = document.getElementById('audio_file');
+function switchTab(tab) {
+    const uploadTab = document.getElementById('uploadTab');
+    const recordTab = document.getElementById('recordTab');
+    const uploadSection = document.getElementById('uploadSection');
+    const recordSection = document.getElementById('recordSection');
+    
+    if (tab === 'upload') {
+        uploadTab.classList.add('active');
+        recordTab.classList.remove('active');
+        uploadSection.classList.remove('hidden');
+        recordSection.classList.add('hidden');
+    } else {
+        recordTab.classList.add('active');
+        uploadTab.classList.remove('active');
+        recordSection.classList.remove('hidden');
+        uploadSection.classList.add('hidden');
+    }
+}
 
-recordButton.addEventListener('click', async () => {
+async function startRecording() {
     try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        
-        // Use audio/webm or audio/ogg which are more widely supported
-        const mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 'audio/ogg';
-        mediaRecorder = new MediaRecorder(stream, { mimeType: mimeType });
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
         audioChunks = [];
         
         mediaRecorder.ondataavailable = (event) => {
@@ -77,40 +226,135 @@ recordButton.addEventListener('click', async () => {
         };
         
         mediaRecorder.onstop = () => {
-            const mimeType = mediaRecorder.mimeType;
-            recordedBlob = new Blob(audioChunks, { type: mimeType });
-            const audioUrl = URL.createObjectURL(recordedBlob);
-            recordedAudio.src = audioUrl;
-            recordedAudio.style.display = 'block';
-            
-            // Create a file from blob with correct extension
-            const extension = mimeType.includes('webm') ? 'webm' : 'ogg';
-            const file = new File([recordedBlob], `recorded_audio.${extension}`, { type: mimeType });
-            const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(file);
-            audioFileInput.files = dataTransfer.files;
+            const mimeType = mediaRecorder.mimeType || 'audio/wav';
+            const audioBlob = new Blob(audioChunks, { type: mimeType });
+            displayRecordedAudio(audioBlob);
         };
         
         mediaRecorder.start();
-        recordButton.classList.add('recording');
-        recordButton.disabled = true;
-        stopButton.disabled = false;
-        recordingStatus.textContent = '🔴 Recording...';
         
-    } catch (err) {
-        alert('Could not access microphone: ' + err.message);
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        startBtn.disabled = true;
+        startBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        stopBtn.disabled = false;
+        stopBtn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+        stopBtn.classList.add('bg-gradient-to-r', 'from-gray-700', 'to-gray-800', 'hover:from-gray-800', 'hover:to-gray-900', 'text-white', 'shadow-lg', 'hover:scale-105');
+        
+        document.getElementById('recordingIndicator').classList.remove('hidden');
+    } catch (error) {
+        alert('Microphone access denied: ' + error.message);
     }
-});
+}
 
-stopButton.addEventListener('click', () => {
-    if (mediaRecorder && mediaRecorder.state === 'recording') {
-        mediaRecorder.stop();
-        mediaRecorder.stream.getTracks().forEach(track => track.stop());
-        recordButton.classList.remove('recording');
-        recordButton.disabled = false;
-        stopButton.disabled = true;
-        recordingStatus.textContent = '✅ Recording complete';
+function stopRecording() {
+    mediaRecorder.stop();
+    stream.getTracks().forEach(track => track.stop());
+    
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    startBtn.disabled = false;
+    startBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+    stopBtn.disabled = true;
+    stopBtn.classList.remove('bg-gradient-to-r', 'from-gray-700', 'to-gray-800', 'hover:from-gray-800', 'hover:to-gray-900', 'text-white', 'shadow-lg', 'hover:scale-105');
+    stopBtn.classList.add('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+    
+    document.getElementById('recordingIndicator').classList.add('hidden');
+}
+
+function displayRecordedAudio(audioBlob) {
+    const audioUrl = URL.createObjectURL(audioBlob);
+    const playback = document.getElementById('audioPlayback');
+    playback.innerHTML = `
+        <div class="mt-6 bg-purple-50 border border-purple-200 rounded-2xl p-6">
+            <p class="text-purple-900 font-bold mb-4 flex items-center text-lg">
+                <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/>
+                </svg>
+                Recorded Audio Ready
+            </p>
+            <audio controls class="w-full mb-5 rounded-xl">
+                <source src="${audioUrl}" type="audio/wav">
+            </audio>
+            <div class="flex gap-3">
+                <button type="button" onclick="processRecordedAudio()" 
+                        class="flex-1 inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold rounded-xl transition transform hover:scale-105 shadow-md">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                    Process Now
+                </button>
+                <button type="button" onclick="clearRecording()" 
+                        class="flex-1 inline-flex items-center justify-center px-6 py-3 bg-white hover:bg-gray-50 text-gray-700 font-bold rounded-xl border-2 border-gray-300 transition transform hover:scale-105">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    Re-record
+                </button>
+            </div>
+        </div>
+    `;
+    window.recordedAudioBlob = audioBlob;
+}
+
+function clearRecording() {
+    document.getElementById('audioPlayback').innerHTML = '';
+    audioChunks = [];
+    window.recordedAudioBlob = null;
+}
+
+async function processRecordedAudio() {
+    if (!window.recordedAudioBlob) {
+        alert('No recorded audio found');
+        return;
     }
-});
+    
+    let extension = 'wav';
+    if (window.recordedAudioBlob.type.includes('webm')) {
+        extension = 'webm';
+    } else if (window.recordedAudioBlob.type.includes('mp4')) {
+        extension = 'mp4';
+    } else if (window.recordedAudioBlob.type.includes('ogg')) {
+        extension = 'ogg';
+    }
+    
+    const formData = new FormData();
+    formData.append('audio_file', window.recordedAudioBlob, `recorded_audio.${extension}`);
+    
+    const buttons = document.querySelectorAll('#audioPlayback button');
+    buttons.forEach(btn => btn.disabled = true);
+    
+    try {
+        const response = await fetch('{% url "noise_reducer" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        });
+        
+        const responseText = await response.text();
+        
+        if (response.ok && !responseText.includes('error')) {
+            document.documentElement.innerHTML = responseText;
+        } else {
+            const errorMatch = responseText.match(/<p class="text-red-700">([^<]+)<\/p>/);
+            const errorMsg = errorMatch ? errorMatch[1] : 'Unknown server error';
+            alert('Processing failed: ' + errorMsg);
+            buttons.forEach(btn => btn.disabled = false);
+        }
+    } catch (error) {
+        alert('Error: ' + error.message);
+        buttons.forEach(btn => btn.disabled = false);
+    }
+}
+
+function handleFileSelect(event) {
+    const file = event.target.files[0];
+    if (file) {
+        document.getElementById('selectedFile').classList.remove('hidden');
+        document.getElementById('fileName').textContent = file.name + ' • ' + (file.size / 1024 / 1024).toFixed(2) + ' MB';
+    }
+}
 </script>
 {% endblock %}

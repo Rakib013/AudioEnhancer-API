@@ -9,11 +9,6 @@ class AudioProcessingSerializer(serializers.ModelSerializer):
 
 class NoiseReductionSerializer(serializers.Serializer):
     audio_file = serializers.FileField()
-    noise_type = serializers.ChoiceField(
-        choices=['None', 'Kitchen', 'Living Room', 'River', 'Cafe'],
-        default='None'
-    )
-    snr = serializers.ChoiceField(choices=['-5', '0', '10', '20'], default='10')
 
 class VolumeBoostSerializer(serializers.Serializer):
     audio_file = serializers.FileField()

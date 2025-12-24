@@ -3,21 +3,108 @@
 {% block title %}Noise Reduction Results{% endblock %}
 
 {% block content %}
-<h1 style="margin-bottom: 2rem;">Noise Reduction Results</h1>
-
-<div class="result">
-    <div class="audio-section">
-        <h2>Noisy Audio</h2>
-        <audio controls src="{{ audio.noisy_audio.url }}"></audio>
-        <h3>Spectrogram</h3>
+<div class="max-w-4xl mx-auto">
+    <!-- Success Header -->
+    <div class="mb-12 text-center">
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
+            <svg class="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+        </div>
+        <h1 class="text-4xl font-bold text-gray-900 mb-2">Processing Complete!</h1>
+        <p class="text-xl text-gray-600">Your audio has been cleaned and is ready to download</p>
     </div>
-    
-    <div class="audio-section">
-        <h2>Enhanced Audio</h2>
-        <audio controls src="{{ audio.processed_audio.url }}"></audio>
-        <h3>Spectrogram</h3>
+
+    <!-- Audio Comparison -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        <!-- Original Audio -->
+        <div class="bg-white rounded-xl shadow-md p-8 border-l-4 border-blue-600">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                <svg class="w-6 h-6 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+                </svg>
+                Original Audio
+            </h2>
+            <div class="bg-gray-50 rounded-lg p-6">
+                <p class="text-gray-600 text-sm mb-4">Original uploaded file</p>
+                <audio controls class="w-full rounded-lg mb-4">
+                    <source src="{{ audio.original_audio.url }}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <p class="text-gray-500 text-sm">
+                    <i class="fas fa-calendar-alt mr-2"></i>{{ audio.created_at|date:"M d, Y g:i A" }}
+                </p>
+            </div>
+        </div>
+
+        <!-- Cleaned Audio -->
+        <div class="bg-white rounded-xl shadow-md p-8 border-l-4 border-green-600">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                <svg class="w-6 h-6 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                Cleaned Audio
+            </h2>
+            <div class="bg-gray-50 rounded-lg p-6">
+                <p class="text-gray-600 text-sm mb-4">Noise-reduced version</p>
+                <audio controls class="w-full rounded-lg mb-4">
+                    <source src="{{ audio.processed_audio.url }}" type="audio/wav">
+                    Your browser does not support the audio element.
+                </audio>
+                <p class="text-green-600 font-semibold text-sm">
+                    <svg class="w-5 h-5 inline text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    Processed successfully
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+        <a href="{{ audio.processed_audio.url }}" download class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold rounded-xl transition transform hover:scale-105 shadow-lg">
+            <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+            </svg>
+            Download Cleaned Audio
+        </a>
+        <a href="{% url 'noise_reducer' %}" class="inline-flex items-center justify-center px-8 py-4 bg-white hover:bg-gray-50 text-gray-800 font-semibold rounded-xl transition border-2 border-gray-300 transform hover:scale-105">
+            <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            Process Another Audio
+        </a>
+    </div>
+
+    <!-- Processing Info -->
+    <div class="bg-blue-50 border-l-4 border-blue-600 rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-3 flex items-center">
+            <svg class="w-6 h-6 text-blue-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+            </svg>
+            Processing Information
+        </h3>
+        <ul class="space-y-2 text-gray-700">
+            <li class="flex items-center">
+                <svg class="w-5 h-5 text-green-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Background noise removed using DeepFilterNet3 AI
+            </li>
+            <li class="flex items-center">
+                <svg class="w-5 h-5 text-green-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Audio quality maintained throughout processing
+            </li>
+            <li class="flex items-center">
+                <svg class="w-5 h-5 text-green-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Ready for download and immediate use
+            </li>
+        </ul>
     </div>
 </div>
-
-<a href="{% url 'noise_reducer' %}" class="back-link">← Process Another File</a>
 {% endblock %}

@@ -1,17 +1,11 @@
-import matplotlib
-matplotlib.use('Agg')
-
 import tempfile
 import torch
 from voicefixer import VoiceFixer
-import matplotlib.pyplot as plt
-import numpy as np
-from PIL import Image
 
 # Initialize VoiceFixer model
 voicefixer = VoiceFixer()
 
-def boost_volume(audio_path: str, mode: int = 0):
+def boost_volume(audio_path: str, mode: int = 1):
     """
     Boost audio volume using VoiceFixer
     

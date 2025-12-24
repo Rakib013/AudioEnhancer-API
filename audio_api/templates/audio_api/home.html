@@ -1,30 +1,228 @@
 {% extends 'audio_api/base.html' %}
 
 {% block content %}
-<div class="card">
-    <h1 style="margin-bottom: 1rem; color: #1976d2;">Welcome to Audio Processor</h1>
-    <p style="color: #666; margin-bottom: 2rem;">Process your audio files with AI-powered noise reduction and volume boosting.</p>
-    
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-        <div style="background: #e3f2fd; padding: 2rem; border-radius: 8px;">
-            <h2 style="color: #1976d2; margin-bottom: 1rem;">🎙️ Noise Reducer</h2>
-            <p style="margin-bottom: 1rem; color: #555;">Remove background noise from your audio using DeepFilterNet2.</p>
-            <a href="{% url 'noise_reducer' %}" style="display: inline-block; background: #1976d2; color: white; padding: 0.75rem 1.5rem; border-radius: 4px; text-decoration: none; font-weight: 600;">Try Noise Reducer</a>
+<!-- Hero Section -->
+<div class="mb-16">
+    <div class="relative bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 rounded-3xl shadow-2xl overflow-hidden">
+        <!-- Animated Waveform Background -->
+        <div class="absolute inset-0 opacity-20">
+            <svg class="w-full h-full" viewBox="0 0 1200 400" preserveAspectRatio="none">
+                <!-- Heartbeat-style waveform animation from left to right -->
+                <path class="waveform" stroke="url(#gradient)" stroke-width="3" fill="none" 
+                      d="M0,200 L50,200 L75,150 L100,250 L125,200 L200,200 L225,180 L250,220 L275,200 L350,200 L375,160 L400,240 L425,200 L500,200 L525,170 L550,230 L575,200 L650,200 L675,190 L700,210 L725,200 L800,200 L825,185 L850,215 L875,200 L950,200 L975,195 L1000,205 L1025,200 L1100,200 L1125,198 L1150,202 L1175,200 L1200,200"/>
+                
+                <defs>
+                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#ec4899;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+            </svg>
         </div>
-        
-        <div style="background: #f3e5f5; padding: 2rem; border-radius: 8px;">
-            <h2 style="color: #7b1fa2; margin-bottom: 1rem;">🔊 Volume Booster</h2>
-            <p style="margin-bottom: 1rem; color: #555;">Enhance and boost audio volume using VoiceFixer AI.</p>
-            <a href="{% url 'volume_booster' %}" style="display: inline-block; background: #7b1fa2; color: white; padding: 0.75rem 1.5rem; border-radius: 4px; text-decoration: none; font-weight: 600;">Try Volume Booster</a>
+
+        <!-- Content -->
+        <div class="relative z-10 px-8 md:px-16 py-16 md:py-20">
+            <div class="max-w-3xl">
+                <h1 class="text-4xl md:text-6xl font-bold mb-5 leading-tight text-white">
+                    Transform Your Audio <br/>
+                    <span class="bg-gradient-to-r from-purple-400 via-pink-400 to-amber-400 text-transparent bg-clip-text">
+                        Instantly with AI
+                    </span>
+                </h1>
+                <p class="text-lg text-gray-300 mb-8 max-w-2xl">
+                    Remove noise and boost volume with state-of-the-art AI processing. Professional results in seconds.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="{% url 'noise_reducer' %}" 
+                       class="inline-flex items-center justify-center px-8 py-3.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-xl transition transform hover:scale-105 shadow-lg hover:shadow-purple-500/50">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                        Start Processing
+                    </a>
+                    {% if not user.is_authenticated %}
+                    <a href="{% url 'signup' %}" 
+                       class="inline-flex items-center justify-center px-8 py-3.5 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold rounded-xl border border-white/20 transition transform hover:scale-105">
+                        Create Account
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="card">
-    <h2 style="margin-bottom: 1rem;">API Endpoints</h2>
-    <ul style="line-height: 2;">
-        <li><code style="background: #f5f5f5; padding: 0.25rem 0.5rem; border-radius: 3px;">POST /api/audio/denoise/</code> - Noise reduction</li>
-        <li><code style="background: #f5f5f5; padding: 0.25rem 0.5rem; border-radius: 3px;">POST /api/audio/boost/</code> - Volume boosting</li>
-    </ul>
+<!-- Features Grid -->
+<div class="mb-16">
+    <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Powerful Audio Tools</h2>
+        <p class="text-gray-600 text-lg">Choose your processing mode</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Noise Reducer Card -->
+        <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 p-8 border border-gray-100">
+            <div class="flex items-center mb-5">
+                <div class="bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl p-3 mr-4 group-hover:scale-110 transition-transform">
+                    <svg class="w-7 h-7 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900">Noise Reduction</h3>
+            </div>
+            <p class="text-gray-600 mb-6 leading-relaxed">
+                Eliminate background noise using DeepFilterNet AI. Perfect for podcasts, meetings, and recordings.
+            </p>
+            <ul class="space-y-3 mb-8">
+                <li class="flex items-center text-gray-700">
+                    <svg class="w-5 h-5 text-purple-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    AI-powered noise detection
+                </li>
+                <li class="flex items-center text-gray-700">
+                    <svg class="w-5 h-5 text-purple-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    Studio-quality output
+                </li>
+                <li class="flex items-center text-gray-700">
+                    <svg class="w-5 h-5 text-purple-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    All audio formats supported
+                </li>
+            </ul>
+            <a href="{% url 'noise_reducer' %}" 
+               class="inline-flex items-center justify-center w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-xl transition transform hover:scale-105 shadow-md">
+                Try Now
+                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+            </a>
+        </div>
+
+        <!-- Volume Booster Card -->
+        <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 p-8 border border-gray-100">
+            <div class="flex items-center mb-5">
+                <div class="bg-gradient-to-br from-emerald-100 to-teal-100 rounded-xl p-3 mr-4 group-hover:scale-110 transition-transform">
+                    <svg class="w-7 h-7 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900">Volume Booster</h3>
+            </div>
+            <p class="text-gray-600 mb-6 leading-relaxed">
+                Amplify quiet audio with intelligent normalization. Ideal for low-volume recordings and videos.
+            </p>
+            <ul class="space-y-3 mb-8">
+                <li class="flex items-center text-gray-700">
+                    <svg class="w-5 h-5 text-emerald-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    Smart volume optimization
+                </li>
+                <li class="flex items-center text-gray-700">
+                    <svg class="w-5 h-5 text-emerald-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    Zero distortion
+                </li>
+                <li class="flex items-center text-gray-700">
+                    <svg class="w-5 h-5 text-emerald-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    Lightning-fast processing
+                </li>
+            </ul>
+            <a href="{% url 'volume_booster' %}" 
+               class="inline-flex items-center justify-center w-full px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold rounded-xl transition transform hover:scale-105 shadow-md">
+                Try Now
+                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+            </a>
+        </div>
+    </div>
 </div>
+
+<!-- How It Works -->
+<div class="mb-16 bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl p-12">
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">How It Works</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div class="text-center">
+            <div class="bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl w-16 h-16 flex items-center justify-center mx-auto mb-6 shadow-lg transform hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">Upload Audio</h3>
+            <p class="text-gray-600">Drop your file or record directly. All formats supported including MP3, WAV, and OGG.</p>
+        </div>
+        
+        <div class="text-center">
+            <div class="bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl w-16 h-16 flex items-center justify-center mx-auto mb-6 shadow-lg transform hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">AI Processing</h3>
+            <p class="text-gray-600">Advanced neural networks analyze and enhance your audio in real-time.</p>
+        </div>
+        
+        <div class="text-center">
+            <div class="bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl w-16 h-16 flex items-center justify-center mx-auto mb-6 shadow-lg transform hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">Download Result</h3>
+            <p class="text-gray-600">Get your enhanced audio instantly. No watermarks, 100% yours.</p>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="relative bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 rounded-3xl shadow-2xl overflow-hidden">
+    <!-- Subtle animated background pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-10 left-10 w-32 h-32 bg-purple-500 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute bottom-10 right-10 w-40 h-40 bg-pink-500 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 px-8 py-16 text-center">
+        <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white">Ready to Transform Your Audio?</h2>
+        <p class="text-gray-300 text-lg mb-8 max-w-2xl mx-auto">Join thousands of creators using AI-powered audio enhancement. No signup required to start.</p>
+        <a href="{% url 'noise_reducer' %}" 
+           class="inline-flex items-center justify-center px-10 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold rounded-xl transition transform hover:scale-105 shadow-lg hover:shadow-purple-500/50">
+            <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+            </svg>
+            Start Free Now
+        </a>
+    </div>
+</div>
+
+<style>
+@keyframes waveflow {
+    0% {
+        stroke-dashoffset: 2400;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+.waveform {
+    stroke-dasharray: 2400;
+    stroke-dashoffset: 2400;
+    animation: waveflow 3s ease-in-out infinite;
+}
+</style>
 {% endblock %}

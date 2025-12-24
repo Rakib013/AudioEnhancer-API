@@ -4,3 +4,6 @@ deepfilternet
 matplotlib
 gradio
 Pillow
+django
+djangorestframework
+pydub

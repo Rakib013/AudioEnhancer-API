@@ -1,56 +1,212 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Audio Processor - {% block title %}Home{% endblock %}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AudioFlow - {% block title %}Home{% endblock %}</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; background: #f0f2f5; }
-        .navbar { background: #1976d2; color: white; padding: 1rem 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .navbar h1 { font-size: 1.5rem; }
-        .navbar a { color: white; text-decoration: none; margin-left: 2rem; }
-        .navbar a:hover { text-decoration: underline; }
-        .container { max-width: 1200px; margin: 2rem auto; padding: 0 20px; }
-        .card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 2rem; }
-        .form-group { margin-bottom: 1.5rem; }
-        label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333; }
-        input[type="file"], select { width: 100%; padding: 0.75rem; border: 2px solid #ddd; border-radius: 4px; font-size: 1rem; }
-        input[type="file"]:focus, select:focus { outline: none; border-color: #1976d2; }
-        button { background: #1976d2; color: white; padding: 0.75rem 2rem; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; font-weight: 600; }
-        button:hover { background: #1565c0; }
-        .result { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
-        .audio-section { background: #f9f9f9; padding: 1.5rem; border-radius: 8px; }
-        .audio-section h2 { margin-bottom: 1rem; color: #1976d2; font-size: 1.25rem; }
-        .audio-section h3 { margin: 1.5rem 0 0.5rem; color: #555; font-size: 1rem; }
-        img { max-width: 100%; height: auto; border-radius: 4px; }
-        .error { color: #d32f2f; background: #ffebee; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; }
-        audio { width: 100%; margin-top: 0.5rem; }
-        .back-link { display: inline-block; margin-top: 1.5rem; color: #1976d2; text-decoration: none; font-weight: 600; }
-        .back-link:hover { text-decoration: underline; }
-        .recorder { margin-bottom: 1rem; }
-        #recordButton { background: #d32f2f; margin-right: 0.5rem; }
-        #recordButton:hover { background: #c62828; }
-        #recordButton.recording { background: #f44336; animation: pulse 1s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
-        #stopButton { background: #666; }
-        #stopButton:hover { background: #555; }
-        #stopButton:disabled { background: #ccc; cursor: not-allowed; }
+        .btn-primary {
+            @apply bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold py-2.5 px-6 rounded-xl transition duration-200 shadow-md hover:shadow-lg transform hover:scale-105;
+        }
+        .btn-secondary {
+            @apply bg-white/10 hover:bg-white/20 backdrop-blur-sm text-gray-700 font-semibold py-2.5 px-6 rounded-xl transition duration-200 border border-gray-200 hover:border-purple-300 transform hover:scale-105;
+        }
+        .btn-danger {
+            @apply bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white font-semibold py-2.5 px-6 rounded-xl transition duration-200 shadow-md hover:shadow-lg transform hover:scale-105;
+        }
+        
+        /* Logo pulse animation */
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .logo-icon {
+            animation: logoPulse 2s ease-in-out infinite;
+        }
     </style>
     {% block extra_css %}{% endblock %}
 </head>
-<body>
-    <div class="navbar">
-        <h1>🎵 Audio Processor</h1>
-        <nav style="margin-top: 0.5rem;">
-            <a href="{% url 'home' %}">Home</a>
-            <a href="{% url 'noise_reducer' %}">Noise Reducer</a>
-            <a href="{% url 'volume_booster' %}">Volume Booster</a>
-        </nav>
-    </div>
-    
-    <div class="container">
+<body class="bg-gradient-to-br from-gray-50 to-gray-100">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg shadow-lg border-b border-purple-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="{% url 'home' %}" class="flex items-center space-x-3 group">
+                    <!-- Modern Audio Waveform Logo -->
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl blur opacity-50 group-hover:opacity-75 transition"></div>
+                        <svg class="relative w-10 h-10 logo-icon" viewBox="0 0 40 40" fill="none">
+                            <rect width="40" height="40" rx="10" fill="url(#logoGradient)"/>
+                            <!-- Waveform bars -->
+                            <rect x="8" y="16" width="3" height="8" rx="1.5" fill="white" opacity="0.9"/>
+                            <rect x="13" y="12" width="3" height="16" rx="1.5" fill="white"/>
+                            <rect x="18" y="8" width="3" height="24" rx="1.5" fill="white"/>
+                            <rect x="23" y="14" width="3" height="12" rx="1.5" fill="white" opacity="0.9"/>
+                            <rect x="28" y="18" width="3" height="4" rx="1.5" fill="white" opacity="0.8"/>
+                            <defs>
+                                <linearGradient id="logoGradient" x1="0" y1="0" x2="40" y2="40">
+                                    <stop offset="0%" stop-color="#9333ea"/>
+                                    <stop offset="100%" stop-color="#ec4899"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 text-transparent bg-clip-text">AudioFlow</span>
+                        <div class="text-xs text-gray-500 font-medium -mt-1">AI Audio Enhancement</div>
+                    </div>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-2">
+                    <a href="{% url 'noise_reducer' %}" class="group px-4 py-2 text-gray-700 hover:text-purple-600 font-medium transition rounded-lg hover:bg-purple-50 flex items-center">
+                        <div class="mr-2 p-1.5 rounded-lg bg-purple-100 text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
+                            </svg>
+                        </div>
+                        <span>Noise Reducer</span>
+                    </a>
+                    <a href="{% url 'volume_booster' %}" class="group px-4 py-2 text-gray-700 hover:text-emerald-600 font-medium transition rounded-lg hover:bg-emerald-50 flex items-center">
+                        <div class="mr-2 p-1.5 rounded-lg bg-emerald-100 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                            </svg>
+                        </div>
+                        <span>Volume Booster</span>
+                    </a>
+                    
+                    <div class="w-px h-8 bg-gray-200 mx-2"></div>
+                    
+                    <!-- Auth Links -->
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'profile' %}" class="group px-4 py-2 text-gray-700 hover:text-purple-600 font-medium transition rounded-lg hover:bg-purple-50 flex items-center">
+                            <div class="mr-2 w-8 h-8 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center text-white text-sm font-bold">
+                                {{ user.username|slice:":1"|upper }}
+                            </div>
+                            <span>{{ user.username }}</span>
+                        </a>
+                        <a href="{% url 'logout' %}" class="btn-danger flex items-center text-sm">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                            </svg>
+                            Logout
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn-secondary flex items-center text-sm">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                            </svg>
+                            Login
+                        </a>
+                        <a href="{% url 'signup' %}" class="btn-primary flex items-center text-sm">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                            </svg>
+                            Sign Up
+                        </a>
+                    {% endif %}
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden p-2 text-gray-700 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition" onclick="document.getElementById('mobileMenu').classList.toggle('hidden')">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="hidden md:hidden border-t border-purple-100 py-4 space-y-2">
+                <a href="{% url 'noise_reducer' %}" class="flex items-center px-4 py-3 text-gray-700 hover:text-purple-600 hover:bg-purple-50 rounded-lg font-medium transition">
+                    <div class="mr-3 p-2 rounded-lg bg-purple-100 text-purple-600">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/>
+                        </svg>
+                    </div>
+                    Noise Reducer
+                </a>
+                <a href="{% url 'volume_booster' %}" class="flex items-center px-4 py-3 text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg font-medium transition">
+                    <div class="mr-3 p-2 rounded-lg bg-emerald-100 text-emerald-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728"/>
+                        </svg>
+                    </div>
+                    Volume Booster
+                </a>
+                <div class="my-2 border-t border-gray-200"></div>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}" class="flex items-center px-4 py-3 text-gray-700 hover:text-purple-600 hover:bg-purple-50 rounded-lg font-medium transition">
+                        <div class="mr-3 w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center text-white font-bold">
+                            {{ user.username|slice:":1"|upper }}
+                        </div>
+                        {{ user.username }}
+                    </a>
+                    <a href="{% url 'logout' %}" class="block mx-4 btn-danger text-center">
+                        <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7"/>
+                        </svg>
+                        Logout
+                    </a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="block mx-4 btn-secondary text-center">
+                        <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14"/>
+                        </svg>
+                        Login
+                    </a>
+                    <a href="{% url 'signup' %}" class="block mx-4 btn-primary text-center">
+                        <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3"/>
+                        </svg>
+                        Sign Up
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {% block content %}{% endblock %}
-    </div>
-    
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 text-gray-300 mt-20 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-3 mb-4 md:mb-0">
+                    <svg class="w-8 h-8" viewBox="0 0 40 40" fill="none">
+                        <rect width="40" height="40" rx="10" fill="url(#footerGradient)"/>
+                        <rect x="8" y="16" width="3" height="8" rx="1.5" fill="white" opacity="0.9"/>
+                        <rect x="13" y="12" width="3" height="16" rx="1.5" fill="white"/>
+                        <rect x="18" y="8" width="3" height="24" rx="1.5" fill="white"/>
+                        <rect x="23" y="14" width="3" height="12" rx="1.5" fill="white" opacity="0.9"/>
+                        <rect x="28" y="18" width="3" height="4" rx="1.5" fill="white" opacity="0.8"/>
+                        <defs>
+                            <linearGradient id="footerGradient" x1="0" y1="0" x2="40" y2="40">
+                                <stop offset="0%" stop-color="#9333ea"/>
+                                <stop offset="100%" stop-color="#ec4899"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <div>
+                        <div class="text-lg font-bold text-white">AudioFlow</div>
+                        <div class="text-xs text-gray-400">AI Audio Enhancement</div>
+                    </div>
+                </div>
+                <div class="text-center md:text-right">
+                    <p class="text-sm text-gray-400">&copy; 2025 AudioFlow. All rights reserved.</p>
+                    <p class="text-xs text-gray-500 mt-1">Powered by DeepFilterNet AI</p>
+                </div>
+            </div>
+        </div>
+    </footer>
     {% block extra_js %}{% endblock %}
 </body>
 </html>
